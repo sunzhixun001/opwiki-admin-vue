@@ -58,6 +58,12 @@ export default {
                             regexp: ".*${form.keyword || ''}.*",
                             options: 'i'
                         })
+                    },
+                    {
+                        priateRegimentName: db.RegExp({
+                            regexp: ".*${form.keyword || ''}.*",
+                            options: 'i'
+                        })
                     }
                 ])
             `).replace(/\s/g, '')

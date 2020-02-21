@@ -18,10 +18,12 @@
                     getAccessToken().then(response => {
                         console.log('getAccessToken response', response);
                         localStorage.setItem('access_token', (response && response.access_token) || '');
-                        localStorage.setItem('expires_in', response && ((new Date()).getTime() + (response.expires_in || 0 * 1000)) || '')
+                        localStorage.setItem('expires_in', response && ((new Date()).getTime() + ((response.expires_in || 0) * 1000)) || '')
                         const router = this.$router
                         console.log('router', router);
-                        this.$router.replace('/home');
+                        this.$router.replace('/').then(() => {
+                          console.log('push on complete');  
+                        }).catch(err => { console.log(err) });
                     }).catch(error => {
                         this.$message({
                             message: error,
