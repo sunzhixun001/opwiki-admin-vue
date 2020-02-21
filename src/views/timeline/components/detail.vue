@@ -57,12 +57,6 @@ export default {
             this.$emit('update:visible', false)
         }
     },
-    mutated: {
-
-    },
-    mounted() {
-
-    },
     watch: {
         id: function (val, oldVal) {
             console.log(`val: ${val}, oldVal: ${oldVal}`)
@@ -78,17 +72,6 @@ export default {
                 console.log('getDocument error', error)
             })
         }
-    },
-    updated () {
-        // console.log(this.id)
-        // getDocument(this.id).then(response => {
-        //     this.form = JSON.parse(response.data[0])
-        // }).catch(error => {
-        //     console.log('getDocument error', error)
-        // })
-    },
-    beforeUpdate () {
-        
     }
 }
 </script>

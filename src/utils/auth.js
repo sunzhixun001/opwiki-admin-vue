@@ -8,8 +8,19 @@ export const getToken = () => {
         if (expires_date.toString() !== 'Invalid Date') {
             if((new Date()).getTime() < expires_date) {
                 result = token
+            } else {
+                removeToken()
             }
+        } else {
+            removeToken()
         }
+    } else {
+        removeToken()
     }
     return result;
+}
+
+const removeToken = () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('expires_in')
 }

@@ -14,20 +14,24 @@
     export default {
         methods: {
             submit: function() {
-                getAccessToken().then(response => {
-                    console.log('getAccessToken response', response);
-                    localStorage.setItem('access_token', response.access_token);
-                    localStorage.setItem('expires_in', (new Date()).getTime() + (response.expires_in * 1000))
-                    const router = this.$router
-                    console.log('router', router);
-                    this.$router.push('/');
-                }).catch(error => {
-                    this.$message({
-                        message: error,
-                        type: 'error'
+                try {
+                    getAccessToken().then(response => {
+                        console.log('getAccessToken response', response);
+                        localStorage.setItem('access_token', (response && response.access_token) || '');
+                        localStorage.setItem('expires_in', response && ((new Date()).getTime() + (response.expires_in || 0 * 1000)) || '')
+                        const router = this.$router
+                        console.log('router', router);
+                        this.$router.replace('/home');
+                    }).catch(error => {
+                        this.$message({
+                            message: error,
+                            type: 'error'
+                        })
+                        console.log(error);
                     })
-                    console.log(error);
-                })
+                } catch ( submitError) {
+                    console.log('submitError', submitError)
+                }
             }
         }
     }

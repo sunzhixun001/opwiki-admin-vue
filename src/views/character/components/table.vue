@@ -5,39 +5,28 @@
             @row-click="rowClick"
         >
             <el-table-column
-                prop="age"
-                label="age"
-            />
-             <el-table-column
-                prop="showAge"
-                label="showAge"
-            />
-            <el-table-column
-                prop="title"
-                label="title"
-            />
-            <el-table-column
-                label="tags"
-            >
-                <template slot-scope="scope">
-                    <el-tag 
-                        v-for="tag in scope.row.tags"
-                        :key="tag"
-                    >{{tag}}</el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="characters"
+                prop="avator"
+                label="avator"
             >
                 <template slot-scope="scope">
                     <el-avatar 
-                        v-for="chara in scope.row.characters"
-                        :key="chara.id"
-                        :src="chara.avator | avatorDownload"
-                        size="small"
+                        size="small" 
+                        :src="scope.row.avator_download_url"
                     />
                 </template>
-            </el-table-column>
+             </el-table-column>
+            <el-table-column
+                prop="name"
+                label="name"
+            />
+             <el-table-column
+                prop="fullname"
+                label="fullname"
+            />
+            <el-table-column
+                prop="pinyinName"
+                label="pinyinName"
+            />
         </el-table>
         <el-pagination
             @size-change="handleSizeChange"
