@@ -25,7 +25,12 @@ import {
   Option,
   Drawer,
   Loading,
-  Image
+  Image,
+  DatePicker,
+  Col,
+  Radio,
+  RadioGroup,
+  RadioButton,
 } from 'element-ui'
 
 import './permission'
@@ -53,6 +58,11 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Drawer)
 Vue.use(Image)
+Vue.use(DatePicker)
+Vue.use(Col)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = Loading.service;
 

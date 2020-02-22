@@ -15,17 +15,27 @@
                     label-width="120px"
                     size="mini"
                 >
-                    <el-form-item label="name">
-                        <el-input v-model="form.name"></el-input>
+                    <el-form-item label="名字">
+                        <el-col :span="10">
+                            <el-input v-model="form.name"></el-input>
+                        </el-col>
+                        <el-col :span="4">
+                            全名
+                        </el-col>
+                        <el-col :span="10">
+                            <el-input v-model="form.fullname"></el-input>
+                        </el-col>
                     </el-form-item>
-                    <el-form-item label="fullname">
-                        <el-input v-model="form.fullname"></el-input>
-                    </el-form-item>
-                    <el-form-item label="pinyinName">
-                        <el-input v-model="form.pinyinName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="englishName">
-                        <el-input v-model="form.englishName"></el-input>
+                    <el-form-item label="拼音名">
+                        <el-col :span="10">
+                            <el-input v-model="form.pinyinName"></el-input>
+                        </el-col>
+                        <el-col :span="4">
+                            英文名
+                        </el-col>
+                        <el-col :span="10">
+                            <el-input v-model="form.englishName"></el-input>
+                        </el-col>
                     </el-form-item>
                     <el-form-item label="japaneseName">
                         <el-input v-model="form.japaneseName"></el-input>
@@ -37,7 +47,11 @@
                         <el-input v-model="form.height"></el-input>
                     </el-form-item>
                     <el-form-item label="birthday">
-                        <el-input v-model="form.birthday"></el-input>
+                        <el-date-picker 
+                            v-model="form.birthday"
+                            type="date"
+                            placeholder="生日"
+                        ></el-date-picker>
                     </el-form-item>
                     <el-form-item label="photo">
                         <el-image
@@ -72,10 +86,53 @@
                             >添加</el-button>
                         </div>
                     </el-form-item>
+                    <el-form-item label="角色">
+                        <el-radio-group v-model="form.role">
+                            <el-radio :label="0">无</el-radio>
+                            <el-radio :label="1">海贼</el-radio>
+                            <el-radio :label="2">海军</el-radio>
+                            <el-radio :label="3">革命家</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="海贼团">
+                        <el-col :span="10">
+                            <el-input v-model="form.priateRegimentName"></el-input>
+                        </el-col>
+                        <el-col :span="4">
+                            -
+                        </el-col>
+                        <el-col :span="10">
+                            <el-input v-model="form.job"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="赏金">
+                        <el-col :span="10">
+                            <el-input v-model="form.bounty"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="能力">
+                        <el-col :span="14">
+                            <el-radio-group v-model="form.devilfruitType">
+                                <el-radio label="超人系">超人系</el-radio>
+                                <el-radio label="自然系">自然系</el-radio>
+                                <el-radio label="动物系">动物系</el-radio>
+                            </el-radio-group>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-input v-model="form.devilfruitName"></el-input>
+                        </el-col>
+                        <el-col :span="2">
+                            <i class="el-icon-delete-solid"></i>
+                        </el-col>
+                    </el-form-item>
                 </el-form>
             </el-main>
             <el-footer>
-                <el-button>保存</el-button>
+                <div class="action">
+                    <div class="button">
+                        <el-button type="primary">保存</el-button>
+                    </div>
+                </div>
             </el-footer>
         </el-container>
     </el-drawer>
@@ -91,7 +148,8 @@ export default {
     data () {
         return {
             form: {
-                name: ''
+                name: '',
+                role: 0
             }
         }
     },
@@ -147,9 +205,20 @@ export default {
         height: 100%;
     }
     .el-footer {
-        background-color: #B3C0D1;
+        border-top: solid 1px #B3C0D1;
         color: #333;
         text-align: center;
         line-height: 60px;
+    }
+    .action {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .action .button {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
     }
 </style>

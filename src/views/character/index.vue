@@ -36,7 +36,7 @@ export default {
         }
     },
     mounted() {
-        this.doSearch({})
+        
     },
     components: {
         'search-from': SearchFrom,

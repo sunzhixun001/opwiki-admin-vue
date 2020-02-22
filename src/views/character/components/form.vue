@@ -6,10 +6,6 @@
             <el-input v-model="form.keyword">
             </el-input>
         </el-form-item>
-        <el-form-item label="海贼团">
-            <el-input v-model="form.priateRegimentName">
-            </el-input>
-        </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
@@ -21,10 +17,12 @@ export default {
     data() {
         return {
             form: {
-                keyword: '',
-                priateRegimentName: ''
+                keyword: '草帽',
             }
         }
+    },
+    mounted () {
+        this.$emit('search', this.form)
     },
     computed: {
         chapters () {
