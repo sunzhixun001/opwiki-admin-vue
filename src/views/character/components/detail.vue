@@ -10,70 +10,73 @@
         <el-container
              style="height: 100%;"
         >
-        <el-main>
-            <el-form
-                label-width="120px"
-                size="mini"
-            >
-                <el-form-item label="name">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="fullname">
-                    <el-input v-model="form.fullname"></el-input>
-                </el-form-item>
-                <el-form-item label="pinyinName">
-                    <el-input v-model="form.pinyinName"></el-input>
-                </el-form-item>
-                <el-form-item label="englishName">
-                    <el-input v-model="form.englishName"></el-input>
-                </el-form-item>
-                <el-form-item label="japaneseName">
-                    <el-input v-model="form.japaneseName"></el-input>
-                </el-form-item>
-                <el-form-item label="age">
-                    <el-input v-model="form.age"></el-input>
-                </el-form-item>
-                <el-form-item label="height">
-                    <el-input v-model="form.height"></el-input>
-                </el-form-item>
-                <el-form-item label="birthday">
-                    <el-input v-model="form.birthday"></el-input>
-                </el-form-item>
-                <el-form-item label="photo">
-                    <el-image
-                        :src="form.img_download_url"
-                        style="width: 100px; height: 100px"
-                    ></el-image>
-                    <el-input v-model="form.img"></el-input>
-                </el-form-item>
-                <el-form-item label="characters">
-                    <el-table   
-                        v-show="form.relationships && form.relationships.length"
-                        :data="form.relationships"
-                        :show-header="false"
-                    >
-                        <el-table-column
-                            prop="avator"
+            <el-main>
+                <el-form
+                    label-width="120px"
+                    size="mini"
+                >
+                    <el-form-item label="name">
+                        <el-input v-model="form.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="fullname">
+                        <el-input v-model="form.fullname"></el-input>
+                    </el-form-item>
+                    <el-form-item label="pinyinName">
+                        <el-input v-model="form.pinyinName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="englishName">
+                        <el-input v-model="form.englishName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="japaneseName">
+                        <el-input v-model="form.japaneseName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="age">
+                        <el-input v-model="form.age"></el-input>
+                    </el-form-item>
+                    <el-form-item label="height">
+                        <el-input v-model="form.height"></el-input>
+                    </el-form-item>
+                    <el-form-item label="birthday">
+                        <el-input v-model="form.birthday"></el-input>
+                    </el-form-item>
+                    <el-form-item label="photo">
+                        <el-image
+                            :src="form.img_download_url"
+                            style="width: 100px; height: 100px"
+                        ></el-image>
+                        <el-input v-model="form.img"></el-input>
+                    </el-form-item>
+                    <el-form-item label="characters">
+                        <el-table   
+                            v-show="form.relationships && form.relationships.length"
+                            :data="form.relationships"
+                            :show-header="false"
                         >
-                            <template slot-scope="scope">
-                                <el-avatar
-                                    :src="scope.row.avator_download_url"
-                                    size="small"
-                                ></el-avatar>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            prop="type"
-                        />
-                    </el-table>
-                    <div style="margin-top: 20px">
-                        <el-button
-                            icon="el-icon-plus"
-                        >添加</el-button>
-                    </div>
-                </el-form-item>
-            </el-form>
-        </el-main>
+                            <el-table-column
+                                prop="avator"
+                            >
+                                <template slot-scope="scope">
+                                    <el-avatar
+                                        :src="scope.row.avator_download_url"
+                                        size="small"
+                                    ></el-avatar>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="type"
+                            />
+                        </el-table>
+                        <div style="margin-top: 20px">
+                            <el-button
+                                icon="el-icon-plus"
+                            >添加</el-button>
+                        </div>
+                    </el-form-item>
+                </el-form>
+            </el-main>
+            <el-footer>
+                <el-button>保存</el-button>
+            </el-footer>
         </el-container>
     </el-drawer>
 </template>
@@ -113,18 +116,20 @@ export default {
             })
         },
         getRelationshipImage (relationships) {
-            batchDownloadFile(relationships.map(current => current.avator)).then(response => {
-                const files = response.file_list
-                files.forEach((current) => {
-                    const target = this.form.relationships.find((element) => element.avator === current.fileid)
-                    if (target) {
-                        this.$set(target, 'avator_download_url', current.download_url)
-                    }
+            if (relationships && relationships.length > 0) {
+                batchDownloadFile(relationships.map(current => current.avator)).then(response => {
+                    const files = response.file_list
+                    files.forEach((current) => {
+                        const target = this.form.relationships.find((element) => element.avator === current.fileid)
+                        if (target) {
+                            this.$set(target, 'avator_download_url', current.download_url)
+                        }
+                    })
+                }).catch(error => {
+                    console.log('getRelationshipImage error', error)
                 })
-            }).catch(error => {
-                console.log('getRelationshipImage error', error)
-            })
-        }
+                }
+            }
     },
     watch: {
         id: function (val, oldVal) {
@@ -139,6 +144,12 @@ export default {
 </script>
 <style>
     .character-detail-drawer .el-drawer__body {
-        overflow-x: scroll;
+        height: 100%;
+    }
+    .el-footer {
+        background-color: #B3C0D1;
+        color: #333;
+        text-align: center;
+        line-height: 60px;
     }
 </style>
