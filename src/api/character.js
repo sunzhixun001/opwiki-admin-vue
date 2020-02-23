@@ -35,3 +35,20 @@ export const getDocument = (id) => {
         })
     })
 }
+
+export const UpdateDocument = (id, data) => {
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/tcb/databaseupdate',
+            method: 'post',
+            data: {
+                env: 'develop-6e54e7',
+                query: `db.collection("biologicals").doc('${id}').update({data:${data}})`
+            }
+        }).then(response => {
+            resolve(response)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}

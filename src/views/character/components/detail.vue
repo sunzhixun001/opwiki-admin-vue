@@ -51,6 +51,8 @@
                             v-model="form.birthday"
                             type="date"
                             placeholder="生日"
+                            default-value="1500-01-01"
+                            value-format="yyyy-MM-dd"
                         ></el-date-picker>
                     </el-form-item>
                     <el-form-item label="photo">
@@ -130,7 +132,7 @@
             <el-footer>
                 <div class="action">
                     <div class="button">
-                        <el-button type="primary">保存</el-button>
+                        <el-button type="primary" @click="handleSave">保存</el-button>
                     </div>
                 </div>
             </el-footer>
@@ -139,7 +141,8 @@
 </template>
 <script>
 import {
-    getDocument
+    getDocument,
+    UpdateDocument
 } from '../../../api/character'
 import {
     batchDownloadFile
@@ -149,7 +152,8 @@ export default {
         return {
             form: {
                 name: '',
-                role: 0
+                role: 0,
+                birthday: ''
             }
         }
     },
@@ -186,8 +190,26 @@ export default {
                 }).catch(error => {
                     console.log('getRelationshipImage error', error)
                 })
-                }
             }
+        },
+        handleSave () {
+            UpdateDocument(this.id, (`
+                {
+                    birthday: "${this.form.birthday}"
+                }
+            `).replace(/\s/g, '')).then(response => {
+                const {matched, modified} = response
+                if (matched && modified) {
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                }
+                console.log(response)
+            }).catch(error => {
+                console.log(error);
+            })
+        }
     },
     watch: {
         id: function (val, oldVal) {
