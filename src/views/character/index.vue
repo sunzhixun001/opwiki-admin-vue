@@ -2,6 +2,7 @@
     <div>
         <search-from 
             @search="doSearch"
+            @add="handleAdd"
         />
         <character-table 
             :currentPage="currentPage"
@@ -87,6 +88,10 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+        handleAdd () {
+            this.id = ''
+            this.visibleDeatil = true
         }
     }
 }
