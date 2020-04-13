@@ -3,6 +3,7 @@
         <search-from 
             @search="doSearch"
             @add="handleAdd"
+            ref="searchFrom"
         />
         <character-table 
             :currentPage="currentPage"
@@ -13,6 +14,7 @@
         <character-detail 
             v-bind:visible.sync="visibleDeatil"
             :id="id"
+            ref="characterDetail"
         />
     </div>
 </template>
@@ -37,7 +39,7 @@ export default {
         }
     },
     mounted() {
-        
+        console.log(this.$refs)
     },
     components: {
         'search-from': SearchFrom,

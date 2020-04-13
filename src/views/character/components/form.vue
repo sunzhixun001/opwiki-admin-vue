@@ -3,7 +3,7 @@
         inline
     >
         <el-form-item label="关键字">
-            <el-input v-model="form.keyword">
+            <el-input v-model="form.keyword" ref="keywordInput">
             </el-input>
         </el-form-item>
         <el-form-item>

@@ -54,5 +54,8 @@ export default {
             this.$emit("row-click", row._id)
         }
     },
+    mounted () {
+        console.log('$listeners', this.$listeners)
+    }
 }
 </script>
