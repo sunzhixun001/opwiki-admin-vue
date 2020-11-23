@@ -20,7 +20,7 @@
                 </el-form-item>
                 <el-form-item label="photo">
                     <el-image
-                        :src="form.photo_download_url"
+                        :src="form.photo_download_url || form.photo"
                     ></el-image>
                     <el-input v-model="form.photo"></el-input>
                 </el-form-item>
@@ -34,15 +34,23 @@
                 </el-form-item>
             </el-form>
         </el-main>
+        <el-footer>
+            <div class="action">
+                <div class="button">
+                    <el-button type="primary" @click="handleSave">保存</el-button>
+                </div>
+            </div>
+        </el-footer>
     </el-drawer>
 </template>
 <script>
 import {
-    getDocument
-} from '../../../api/timeline'
+    getDocument,
+    updateDocument
+} from '@/api/timeline'
 import {
     batchDownloadFile
-} from '../../../api/file'
+} from '@/api/file'
 export default {
     data () {
         return {
@@ -55,6 +63,16 @@ export default {
     methods: {
         close() {
             this.$emit('update:visible', false)
+        },
+        saveParams (form) {
+            return (`
+                {
+                    showAge: "${form.showAge}"
+                }
+            `).replace(/\s/g, '')
+        },
+        handleSave() {
+            updateDocument(this.form._id, this.saveParams(this.form));
         }
     },
     watch: {
@@ -62,12 +80,14 @@ export default {
             console.log(`val: ${val}, oldVal: ${oldVal}`)
             getDocument(val).then(response => {
                 const tl = JSON.parse(response.data[0])
-                this.form = Object.assign(this.form, {...tl})
-                batchDownloadFile([tl.photo]).then(response => {
-                    this.form.photo_download_url = response.file_list[0].download_url
-                }).catch(error => {
-                    console.log('error', error)
-                })
+                this.form = Object.assign({}, this.form, {...tl})
+                if (tl.photo.indexOf('cloud') === 0) {
+                    batchDownloadFile([tl.photo]).then(response => {
+                        this.form.photo_download_url = response.file_list[0].download_url
+                    }).catch(error => {
+                        console.log('error', error)
+                    })
+                }
             }).catch(error => {
                 console.log('getDocument error', error)
             })

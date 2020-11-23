@@ -1,6 +1,6 @@
 <template>
     <div>
-        <search-from />
+        <search-from v-on:search="handleSearch" />
         <timeline-table
             :currentPage="currentPage"
             :total="total"
@@ -16,11 +16,12 @@
 <script>
 import {
     getCollection
-} from '../../api/timeline'
+} from '@/api/timeline'
 import SearchFrom from './components/form'
 import TimelineTable from './components/table'
-import TimelineDetail from './components/detail'
+import TimelineDetail from './components/timeline-detail'
 export default {
+    name: 'timeLime',
     data() {
         return {
             tableData: [],
@@ -32,19 +33,35 @@ export default {
         }
     },
     methods: {
+        handleSearch(form) {
+            this.fetchGetCollection(form.keyword);
+        },
         tableRowClick(id) {
             this.id = id
             this.visibleDeatil = true
+        },
+        getSearchParams(keyword) {
+            return (`
+                {
+                    title: db.RegExp({
+                        regexp: '.*${keyword}.*',
+                        options: 'i'
+                    })
+                }
+            `).replace(/\s/g, '');
+        },
+        fetchGetCollection(keyword) {
+            getCollection(1, this.getSearchParams(keyword)).then(data => {
+                console.log(data);
+                this.tableData = data.data.map(item => {
+                    return JSON.parse(item)
+                })
+            this.total = data.pager.Total
+        })
         }
     },
     mounted() {
-        getCollection().then(data => {
-            console.log(data);
-            this.tableData = data.data.map(item => {
-                return JSON.parse(item)
-            })
-            this.total = data.pager.Total
-        })
+       this.fetchGetCollection();
     },
     filters: {
         avatorDownlong: function(value) {

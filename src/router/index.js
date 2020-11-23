@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Layout from '../views/layout'
 import Home from '../views/home'
 import Login from '../views/login'
-import Timeline from '../views/timeline'
+import Timeline from '../views/timeline/time-line'
 import Character from '../views/character'
 
 Vue.use(VueRouter);

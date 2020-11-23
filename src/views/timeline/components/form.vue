@@ -1,6 +1,7 @@
 <template>
     <el-form
         inline
+        :model="form"
     >
         <el-form-item label="篇章">
             <el-select 
@@ -42,7 +43,7 @@ export default {
     },
     methods: {
         onSubmit() {
-
+            this.$emit('search', this.form)
         }
     }
 }
