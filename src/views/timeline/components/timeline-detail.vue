@@ -8,7 +8,10 @@
         <el-main>
             <el-form
                 label-width="80px"
-            >
+            >   
+                <el-form-item label="id">
+                    {{form._id}}
+                </el-form-item>
                 <el-form-item label="age">
                     <el-input v-model="form.age"></el-input>
                 </el-form-item>
@@ -67,7 +70,8 @@ export default {
         saveParams (form) {
             return (`
                 {
-                    showAge: "${form.showAge}"
+                    showAge: "${form.showAge}",
+                    photo: "${form.photo}"
                 }
             `).replace(/\s/g, '')
         },
