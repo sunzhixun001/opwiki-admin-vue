@@ -1,13 +1,12 @@
 <template>
     <el-container>
-        <el-header>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-                <el-menu-item index="1">One Piece Wiki</el-menu-item>
-            </el-menu>
-        </el-header>
         <el-container>
             <el-aside width="200px">
-                <el-menu>
+                <el-menu
+                    background-color="#545c64"
+                    text-color="#fff"
+                    active-text-color="#ffd04b"
+                >
                     <el-submenu index="1">
                         <template slot="title">
                             <span>时间线</span>

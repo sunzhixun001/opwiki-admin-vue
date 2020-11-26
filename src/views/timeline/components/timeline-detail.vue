@@ -1,10 +1,5 @@
 <template>
-    <el-drawer
-        title="时间线明细"
-        :visible="visible"
-        size="50%"
-        @close="close"
-    >
+    <el-container>
         <el-main>
             <el-form
                 label-width="80px"
@@ -44,7 +39,7 @@
                 </div>
             </div>
         </el-footer>
-    </el-drawer>
+    </el-container>
 </template>
 <script>
 import {
@@ -62,11 +57,7 @@ export default {
             }
         }
     },
-    props: ['visible', 'id'],
     methods: {
-        close() {
-            this.$emit('update:visible', false)
-        },
         saveParams (form) {
             return (`
                 {
@@ -79,22 +70,24 @@ export default {
             updateDocument(this.form._id, this.saveParams(this.form));
         }
     },
-    watch: {
-        id: function (val, oldVal) {
-            console.log(`val: ${val}, oldVal: ${oldVal}`)
-            getDocument(val).then(response => {
-                const tl = JSON.parse(response.data[0])
-                this.form = Object.assign({}, this.form, {...tl})
-                if (tl.photo.indexOf('cloud') === 0) {
-                    batchDownloadFile([tl.photo]).then(response => {
-                        this.form.photo_download_url = response.file_list[0].download_url
-                    }).catch(error => {
-                        console.log('error', error)
-                    })
-                }
-            }).catch(error => {
-                console.log('getDocument error', error)
-            })
+    mounted() {
+         getDocument(this.id).then(response => {
+            const tl = JSON.parse(response.data[0])
+            this.form = Object.assign({}, this.form, {...tl})
+            if (tl.photo.indexOf('cloud') === 0) {
+                batchDownloadFile([tl.photo]).then(response => {
+                    this.form.photo_download_url = response.file_list[0].download_url
+                }).catch(error => {
+                    console.log('error', error)
+                })
+            }
+        }).catch(error => {
+            console.log('getDocument error', error)
+        })
+    },
+    computed: {
+        id () {
+            return this.$store.state.timeline.currentId
         }
     }
 }

@@ -22,6 +22,7 @@
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="onAdd">新增</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -44,6 +45,9 @@ export default {
     methods: {
         onSubmit() {
             this.$emit('search', this.form)
+        },
+        onAdd() {
+            this.$store.commit('changeVisible', true);
         }
     }
 }

@@ -31,16 +31,21 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(response => {
     loading.close()
+    
     if(response.status === 200) {
-        if (response.data.errcode > 0) {
-            Message({
-                message: response.data.errmsg,
-                type: 'error'
-            })
-            return Promise.reject(response.data.errmsg)
+        if (response.config.url.indexOf('cgi-bin/token') >= 0) {
+            return Promise.reject(response.data)
         } else {
-            return Promise.resolve(response.data)
-        }  
+            if (response.data.errcode !== 0) {
+                Message({
+                    message: response.data.errmsg,
+                    type: 'error'
+                })
+                return Promise.reject(response.data.errmsg)
+            } else {
+                return Promise.resolve(response.data)
+            }  
+        }
     }
 }, error => {
     loading.close()

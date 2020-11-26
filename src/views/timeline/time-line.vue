@@ -5,26 +5,35 @@
             :currentPage="currentPage"
             :total="total"
             :tableData="tableData"
-            v-on:row-click="tableRowClick"
+            v-on:change="handlePage"
         />
-        <timeline-detail
-            v-bind:visible.sync="visibleDeatil"
-            :id="id"
-        />
+        <el-drawer
+            title="时间线明细"
+            :visible.sync="visibleDetail"
+            size="50%"
+            destroy-on-close
+        >
+            <timeline-detail />
+        </el-drawer>
     </div>
 </template>
 <script>
 import {
     getCollection
 } from '@/api/timeline'
-import SearchFrom from './components/form'
-import TimelineTable from './components/table'
+import { visibleDetail } from '@/utils/timeline';
+import SearchFrom from './components/timeline-form'
+import TimelineTable from './components/timeline-table'
 import TimelineDetail from './components/timeline-detail'
 export default {
     name: 'timeLime',
     data() {
         return {
             tableData: [],
+            form: {
+                chapter: '',
+                keyword: ''
+            },
             currentPage: 1,
             total: 0,
             visibleDeatil: false,
@@ -34,38 +43,61 @@ export default {
     },
     methods: {
         handleSearch(form) {
-            this.fetchGetCollection(form.keyword);
+            this.form = form;
+            this.fetchGetCollection(form, 1);
         },
-        tableRowClick(id) {
-            this.id = id
-            this.visibleDeatil = true
+        handlePage(page) {
+            this.currentPage = page;
+            this.fetchGetCollection(this.form, page);
         },
-        getSearchParams(keyword) {
+        getSearchParams(form) {
             return (`
-                {
-                    title: db.RegExp({
-                        regexp: '.*${keyword}.*',
-                        options: 'i'
-                    })
-                }
+                db.command.and([
+                    {
+                        title: db.RegExp({
+                            regexp: '.*${form.keyword}.*',
+                            options: 'i'
+                        })
+                    },
+                    {
+                        tags: db.RegExp({
+                            regexp: '.*${form.chapter}.*',
+                            options: 'i'
+                        })
+                    }
+                ])
+                
             `).replace(/\s/g, '');
         },
-        fetchGetCollection(keyword) {
-            getCollection(1, this.getSearchParams(keyword)).then(data => {
+        fetchGetCollection(form, index = 1) {
+            getCollection(index, this.getSearchParams(form)).then(data => {
                 console.log(data);
                 this.tableData = data.data.map(item => {
                     return JSON.parse(item)
                 })
-            this.total = data.pager.Total
-        })
+                this.total = data.pager.Total
+            }, error => {
+                console.warn(error);
+            })
         }
     },
     mounted() {
-       this.fetchGetCollection();
+        console.log(this.$store);
     },
     filters: {
         avatorDownlong: function(value) {
             return value.replace('cloud://develop-6e54e7.6465-develop-6e54e7', 'https://6465-develop-6e54e7-1259274378.tcb.qcloud.la')
+        }
+    },
+    computed: {
+        visibleDetail: {
+            get() {
+                return this.$store.state.timeline.visibleDetail
+            },
+            set(v) {
+                visibleDetail(v);
+            }
+            
         }
     },
     components: {

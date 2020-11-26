@@ -19,4 +19,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+a:any-link, a:-webkit-any-link {
+  text-decoration: none;
+  color: #ffffff;
+}
+:focus {
+  outline: none;
+}
 </style>
