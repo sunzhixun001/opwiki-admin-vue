@@ -28,6 +28,7 @@ import {
 import {
     batchDownloadFile
 } from '../../api/file'
+import { searchCondition } from '@/utils/timeline'
 export default {
     data () {
         return {
@@ -53,24 +54,7 @@ export default {
         },
         doSearch (form) {
             console.log(form)
-            getCollection(1, 10, 
-            (`
-                db.command.or([
-                    {
-                        fullname: db.RegExp({
-                            regexp: ".*${form.keyword || ''}.*",
-                            options: 'i'
-                        })
-                    },
-                    {
-                        priateRegimentName: db.RegExp({
-                            regexp: ".*${form.keyword || ''}.*",
-                            options: 'i'
-                        })
-                    }
-                ])
-            `).replace(/\s/g, '')
-            ).then(response => {
+            getCollection(1, 10, searchCondition(form)).then(response => {
                 console.log('getCollection response', response)
                 const list = response.data.map(item => {
                     return JSON.parse(item)

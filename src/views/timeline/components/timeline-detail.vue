@@ -18,6 +18,7 @@
                 </el-form-item>
                 <el-form-item label="photo">
                     <el-image
+                        v-if="form.photo"
                         :src="form.photo_download_url || form.photo"
                     ></el-image>
                     <el-input v-model="form.photo"></el-input>
@@ -25,7 +26,7 @@
                 <el-form-item label="characters">
                     <el-avatar
                         v-for="character in form.characters"
-                        :src="character.avator_download_url"
+                        :src="character.avator | avatorDownload"
                         :key="character.id"
                         size="small"
                     ></el-avatar>

@@ -4,7 +4,9 @@ import {
 } from '../api/file'
 
 Vue.filter('avatorDownload', function (value) {
-    return value.replace('cloud://develop-6e54e7.6465-develop-6e54e7', 'https://6465-develop-6e54e7-1259274378.tcb.qcloud.la')
+    return value
+    .replace('cloud://', 'https://')
+    .replace(/develop-6e54e7\.6465-develop-6e54e7-1259274378|develop-6e54e7\.6465-develop-6e54e7/, '6465-develop-6e54e7-1259274378.tcb.qcloud.la')
 })
 
 const fetchBatchDownloadFile = async (value) => {

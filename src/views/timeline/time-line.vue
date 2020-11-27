@@ -15,6 +15,7 @@
         >
             <timeline-detail />
         </el-drawer>
+        <character-search />
     </div>
 </template>
 <script>

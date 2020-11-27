@@ -10,7 +10,7 @@
 <script>
     import {
         getAccessToken
-    } from '../../api/user'
+    } from '@/api/user'
     export default {
         methods: {
             submit: function() {

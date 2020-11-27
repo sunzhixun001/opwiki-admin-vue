@@ -34,7 +34,7 @@ service.interceptors.response.use(response => {
     
     if(response.status === 200) {
         if (response.config.url.indexOf('cgi-bin/token') >= 0) {
-            return Promise.reject(response.data)
+            return Promise.resolve(response.data)
         } else {
             if (response.data.errcode !== 0) {
                 Message({
